@@ -46,7 +46,7 @@ if __name__ == "__main__":
 
     #正式任务
     # 每周二、四、日8:00执行（大乐透开奖时间为周一、三、六）
-    scheduler.add_job(job, 'cron', hour=8, minute=00, day_of_week='tue,thu,sun')
+    scheduler.add_job(job, 'cron', hour=12, minute=00, day_of_week='tue,thu,sun')
 
     #测试任务
     #scheduler.add_job(job, 'interval', seconds=10)
