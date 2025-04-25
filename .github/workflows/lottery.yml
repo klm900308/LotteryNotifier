@@ -1,0 +1,14 @@
+name: Lottery Polling
+
+on:
+  schedule:
+    - cron: '*/15 13-14 * * 0,2,4'  # 开奖日每15分钟检查一次（UTC 13:00-14:00 = 北京21:00-22:00）
+  workflow_dispatch:
+
+jobs:
+  check:
+    timeout-minutes: 5
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python quick_check.py  # 只做快速检查
