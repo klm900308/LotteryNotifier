@@ -1,4 +1,4 @@
-from apscheduler.schedulers.blocking import BlockingScheduler
+#from apscheduler.schedulers.blocking import BlockingScheduler
 from lottery import LotteryChecker
 from notification import send_email
 from datetime import datetime
@@ -19,6 +19,10 @@ def job():
     # 格式化输出
     #pretty_xml = dom.toprettyxml(indent="  ")
     formatted_json = json.dumps(results[0]['prize'], indent=4, ensure_ascii=False)
+
+    if not results:
+        print("未获取到开奖结果")
+        return
 
     for result in results:
         email_content = f"""
@@ -42,17 +46,19 @@ def job():
 # 正式代码...
 if __name__ == "__main__":
     # 创建定时任务
-    scheduler = BlockingScheduler()
+    #scheduler = BlockingScheduler()
 
     #正式任务
     # 每周二、四、日8:00执行（大乐透开奖时间为周一、三、六）
-    scheduler.add_job(job, 'cron', hour=12, minute=00, day_of_week='tue,thu,sun')
+    #scheduler.add_job(job, 'cron', hour=8, minute=00, day_of_week='tue,thu,sun')
 
     #测试任务
     #scheduler.add_job(job, 'interval', seconds=10)
-
+    
     print("彩票开奖通知服务已启动，等待执行...")
-    try:
-        scheduler.start()
-    except (KeyboardInterrupt, SystemExit):
-        print("服务已停止")
+    job()
+    print("任务执行完成...")
+    #try:
+    #   scheduler.start()
+    #except (KeyboardInterrupt, SystemExit):
+    #    print("服务已停止")
