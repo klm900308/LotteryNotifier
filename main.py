@@ -5,6 +5,24 @@ from datetime import datetime
 from xml.dom import minidom
 import json
 
+def format_prize_info(data):
+    content = "【本期开奖结果】\n\n"
+
+    for index, item in enumerate(data, 1):
+        name = item["prizename"]
+        require = item["require"]
+        count = item["num"]
+        money = item["singlebonus"]
+        total = count * money  # 计算总奖金
+
+        content += f"        {index}. {name}\n"
+        content += f"           条件：{require}\n"
+        content += f"           注数：{count:,} 注\n"
+        content += f"           单奖：{money:,} 元\n"
+        content += f"           总奖：{total:,} 元\n\n"
+
+    return content
+
 def job():
     print(f"开始执行检查任务: {datetime.now()}")
     checker = LotteryChecker()
@@ -19,6 +37,7 @@ def job():
     # 格式化输出
     #pretty_xml = dom.toprettyxml(indent="  ")
     formatted_json = json.dumps(results[0]['prize'], indent=4, ensure_ascii=False)
+    content = format_prize_info(json.loads(formatted_json))
 
     if not results:
         print("未获取到开奖结果")
@@ -32,7 +51,7 @@ def job():
         中奖情况: {result['winning_level']}
         你的号码: {', '.join(result['user_numbers'][:5])} | {', '.join(result['user_numbers'][-2:])}
         开奖号码: {', '.join(result['winning_numbers'].split()[:5])} | {', '.join(result['winning_numbers'].split()[-2:])}
-        开奖情况：{formatted_json}
+        开奖情况：{content}
         """
 
         subject = f"大乐透{result['issue']}期开奖结果 - {result['winning_level']}"
