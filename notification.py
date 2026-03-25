@@ -11,7 +11,7 @@ def send_email(subject, content):
     cfg = Config()
 
     message = MIMEText(content, 'plain', 'utf-8')
-    message['From'] =formataddr(("Github彩票中奖通知", '123@qq.com')) # Header(cfg.EMAIL_USER, 'utf-8')
+    message['From'] =formataddr(("Github彩票中奖通知", cfg.EMAIL_USER)) # Header(cfg.EMAIL_USER, 'utf-8')
     message['To'] = formataddr(("收件人", cfg.RECEIVER_EMAIL)) #Header(cfg.RECEIVER_EMAIL, 'utf-8')
     message['Subject'] = Header(subject, 'utf-8')
 
